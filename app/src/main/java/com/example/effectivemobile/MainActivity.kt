@@ -19,9 +19,8 @@ import com.example.effectivemobile.ui.theme.EffectiveMobileTheme
 
 class MainActivity : AppCompatActivity() {
 
-    // эмуляция менеджера авторизации
     private val authManager = object {
-        fun isAuthorized(): Boolean = false // подставь реальную проверку, например токен в SharedPreferences
+        fun isAuthorized(): Boolean = false
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,14 +31,12 @@ class MainActivity : AppCompatActivity() {
             if (authManager.isAuthorized()) {
                 showMainUi()
             } else {
-                // Показать экран входа, меню не добавляем
                 supportFragmentManager.beginTransaction()
                     .replace(R.id.content_container, LoginFragment())
                     .commit()
             }
         }
 
-        // ждём результат от LoginFragment
         supportFragmentManager.setFragmentResultListener("auth_result", this) { _, bundle ->
             val ok = bundle.getBoolean("success", false)
             if (ok) {
@@ -47,7 +44,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        // слушаем клики нижнего меню (как делали раньше)
         supportFragmentManager.setFragmentResultListener("bottom_nav", this) { _, bundle ->
             when (bundle.getString("dest")) {
                 "home"    -> switchTo(CourseListFragment())
@@ -57,19 +53,15 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    /** Показываем основной экран и подключаем меню */
     private fun showMainUi(clearBackStack: Boolean = false) {
         if (clearBackStack) {
-            // очищаем back stack, чтобы кнопка «назад» не вела на логин
             supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
         }
 
-        // основной экран
         supportFragmentManager.beginTransaction()
             .replace(R.id.content_container, CourseListFragment())
             .commit()
 
-        // показать контейнер и вставить фрагмент меню (если ещё не вставлен)
         findViewById<View>(R.id.bottom_container).visibility = View.VISIBLE
         if (supportFragmentManager.findFragmentById(R.id.bottom_container) == null) {
             supportFragmentManager.beginTransaction()
