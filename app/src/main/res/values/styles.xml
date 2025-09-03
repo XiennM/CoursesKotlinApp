@@ -1,0 +1,37 @@
+<resources>
+
+    <!-- Форма активного индикатора: круглая/пилюля -->
+    <style name="ShapeAppearance.MyActiveIndicator" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+
+    <!-- Настройки активного индикатора -->
+    <style name="Widget.MyActiveIndicator" parent="Widget.Material3.BottomNavigationView">
+        <!-- цвет фона пилюли -->
+        <item name="android:color">@color/color_menu_active_indicator</item>
+        <!-- размеры самой пилюли -->
+        <item name="android:width">56dp</item>
+        <item name="android:height">32dp</item>
+        <!-- отступы внутри item, чтобы пилюля была вокруг иконки -->
+        <item name="android:insetLeft">12dp</item>
+        <item name="android:insetRight">12dp</item>
+        <item name="android:insetTop">6dp</item>
+        <item name="android:insetBottom">10dp</item>
+        <!-- скругления -->
+        <item name="shapeAppearance">@style/ShapeAppearance.MyActiveIndicator</item>
+    </style>
+
+    <!-- Стиль самого BottomNavigationView -->
+    <style name="Widget.MyBottomNav" parent="Widget.Material3.BottomNavigationView">
+        <item name="itemIconTint">@color/color_menu_item</item>
+        <item name="itemTextColor">@color/color_menu_item</item>
+        <item name="itemActiveIndicatorStyle">@style/Widget.MyActiveIndicator</item>
+        <!-- отключим ripple, если не нужен яркий эффект -->
+        <item name="itemRippleColor">@android:color/transparent</item>
+        <!-- шрифт по желанию -->
+        <!-- <item name="itemTextAppearanceActive">@style/TextAppearance.Material3.LabelMedium</item> -->
+    </style>
+
+    <color name="menu_active_indicator_bg">#32333A</color>
+</resources>
