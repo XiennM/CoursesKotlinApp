@@ -3,18 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/background_dark"
+    android:background="@color/bg_color"
     android:orientation="vertical">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/login"
-        android:textFontWeight="400"
+        style="?attr/textAppearanceHeadlineLarge"
         android:textColor="@color/white"
         android:layout_marginTop="140dp"
         android:layout_marginStart="16dp"
-        android:textSize="28dp"
         />
 
     <LinearLayout
@@ -35,21 +34,22 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/email_name"
-                android:textColor="@color/white"
-                android:textSize="16sp"
-                android:textFontWeight="500"/>
+                style="?attr/textAppearanceTitleMedium"
+                android:textColor="@color/white"/>
 
             <EditText
                 android:id="@+id/et_email"
                 android:layout_width="fill_parent"
                 android:layout_height="40dp"
                 android:layout_marginTop="8dp"
-                android:background="@color/lightgray"
+                android:background="@drawable/bg_edittext"
                 android:hint="@string/email_example"
+                style="?attr/textAppearanceBodyMedium"
                 android:paddingTop="8dp"
                 android:paddingLeft="16dp"
                 android:textColor="@color/white"
-                android:textColorHint="@color/extralightgray" />
+                android:textColorHint="@color/extralightgray"
+                />
 
         </LinearLayout>
 
@@ -62,17 +62,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/password_name"
-                android:textColor="@color/white"
-                android:textSize="16sp"
-                android:textFontWeight="500"/>
+                style="?attr/textAppearanceTitleMedium"
+                android:textColor="@color/white"/>
 
             <EditText
                 android:id="@+id/et_password"
                 android:layout_width="fill_parent"
                 android:layout_height="40dp"
                 android:layout_marginTop="8dp"
-                android:background="@color/lightgray"
+                android:background="@drawable/bg_edittext"
                 android:hint="@string/password_example"
+                style="?attr/textAppearanceBodyMedium"
                 android:paddingLeft="16dp"
                 android:textColor="@color/white"
                 android:textColorHint="@color/extralightgray" />
@@ -88,9 +88,8 @@
         android:text="@string/login"
         android:layout_marginTop="24dp"
         android:layout_marginHorizontal="16dp"
-        android:background="@color/green_button"
         android:textColor="@color/white"
-        android:textSize="14dp"
+        style="?attr/textAppearanceButton"
         android:textAllCaps="false"/>
 
     <LinearLayout
@@ -106,9 +105,8 @@
             android:textColor="@color/white"
             android:text="@string/no_acc"
             android:layout_marginBottom="8dp"
-            android:textSize="12dp"
-            android:textFontWeight="600"
-            android:gravity="center"/>
+            android:gravity="center"
+            android:textAppearance="?attr/textAppearanceLabelSmall" />
 
         <TextView
             android:layout_width="match_parent"
@@ -116,8 +114,7 @@
             android:textColor="@color/green_text"
             android:text="@string/forget_password"
             android:gravity="center"
-            android:textSize="12dp"
-            android:textFontWeight="600"/>
+            android:textAppearance="?attr/textAppearanceLabelSmall" />
     </LinearLayout>
 
     <LinearLayout
@@ -126,26 +123,28 @@
         android:layout_marginHorizontal="16dp"
         android:layout_marginTop="64dp">
 
-        <ImageButton
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/btn_vk"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:src="@drawable/ic_vk"
-            android:background="@color/color_vk">
-        </ImageButton>
+            app:shapeAppearanceOverlay="@style/ShapeAppearance.MyApp.Pill"
+            android:background="@color/color_vk"/>
 
         <Space
             android:layout_width="16dp"
             android:layout_height="wrap_content"/>
 
 
-        <ImageButton
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/btn_ok"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:src="@drawable/ic_ok"
-            android:background="@color/color_ok"
-            />
+            app:shapeAppearanceOverlay="@style/ShapeAppearance.MyApp.Pill"
+            android:background="@color/color_ok"/>
 
     </LinearLayout>
 

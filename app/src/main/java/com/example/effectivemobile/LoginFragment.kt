@@ -1,5 +1,7 @@
 package com.example.effectivemobile
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.EditorInfo
@@ -11,6 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.google.android.material.imageview.ShapeableImageView
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -22,6 +25,8 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         val etEmail  = view.findViewById<EditText>(R.id.et_email)
         val etPass   = view.findViewById<EditText>(R.id.et_password)
         val btnLogin = view.findViewById<Button>(R.id.btn_login)
+        val btnVK = view.findViewById<ShapeableImageView>(R.id.btn_vk)
+        val btnOK = view.findViewById<ShapeableImageView>(R.id.btn_ok)
 
         etEmail.doAfterTextChanged { viewModel.onEmailChanged(it?.toString().orEmpty()) }
         etPass.doAfterTextChanged  { viewModel.onPassChanged(it?.toString().orEmpty()) }
@@ -34,6 +39,14 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         }
 
         btnLogin.setOnClickListener { viewModel.onLoginClick() }
+
+        btnVK.setOnClickListener {
+            openWebsite( "https://vk.com/")
+        }
+
+        btnOK.setOnClickListener {
+            openWebsite("https://ok.ru/")
+        }
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -57,5 +70,14 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                 }
             }
         }
+    }
+
+    fun onVkClick() {
+
+    }
+
+    private fun openWebsite(url: String){
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+        startActivity(intent)
     }
 }

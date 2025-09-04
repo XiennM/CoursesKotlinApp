@@ -13,4 +13,6 @@
     <color name="green_text">#11B554</color>
     <color name="color_vk">#2683ED</color>
     <color name="color_ok">#F87205</color>
+    <color name="bg_color">#151515</color>
+    <color name="bg_elements">#24252A</color>
 </resources>

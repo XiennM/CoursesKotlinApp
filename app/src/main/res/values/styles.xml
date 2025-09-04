@@ -24,4 +24,9 @@
     </style>
 
     <color name="menu_active_indicator_bg">#32333A</color>
+
+    <style name="ShapeAppearance.MyApp.Pill" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
 </resources>

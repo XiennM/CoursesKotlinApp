@@ -7,4 +7,7 @@
     <string name="password_example">Введите пароль</string>
     <string name="no_acc">Нету аккаунта? Регистрация</string>
     <string name="forget_password">Забыл пароль</string>
+    <string name="search_courses">Search courses...</string>
+    <string name="filter">Отфильтровать</string>
+    <string name="date_of_include">По дате добавления</string>
 </resources>

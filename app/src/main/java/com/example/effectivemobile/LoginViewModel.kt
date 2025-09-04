@@ -1,10 +1,14 @@
 package com.example.effectivemobile
 
+import android.app.Activity
+import android.content.Intent
+import android.net.Uri
 import androidx.lifecycle.ViewModel
 import com.example.effectivemobile.domain.usecase.LoginByEmailUseCase
 import com.example.effectivemobile.domain.usecase.LoginResult
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.*
+import java.net.URI
 
 data class LoginUiState(
     val email: String = "",
