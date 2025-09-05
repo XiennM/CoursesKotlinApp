@@ -1,71 +1,64 @@
 package com.example.data
 
 import android.util.Log
+import com.example.data.local.CourseEntity
+import com.example.data.local.CoursesDao
 import com.example.effectivemobile.domain.models.Course
+import com.example.effectivemobile.domain.models.SortType
 import com.example.effectivemobile.domain.repository.CoursesRepository
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.SerializationException
-import kotlinx.serialization.json.Json
 import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.json.JsonArray
-import kotlinx.serialization.json.JsonElement
-import kotlinx.serialization.json.JsonObject
-
+import kotlinx.serialization.json.*
 
 class CoursesRepositoryImpl(
     private val api: CoursesApi,
+    private val dao: CoursesDao,
+    private val json: Json,
     private val url: String =
-        "https://drive.usercontent.google.com/u/0/uc?id=15arTK7XT2b7Yv4BJsmDctA4Hg-BbS8-q&export=download",
-    private val json: Json
+        "https://drive.usercontent.google.com/u/0/uc?id=15arTK7XT2b7Yv4BJsmDctA4Hg-BbS8-q&export=download"
 ) : CoursesRepository {
 
-    override suspend fun getCourses(): List<Course> = withContext(Dispatchers.IO) {
+    /** Мгновенный показ из БД; сортировка выбирается на уровне запроса DAO */
+    override fun observeCourses(): Flow<List<Course>> =
+        dao.observeAll().map { list -> list.map { it.toDomain() } }
+
+    /** Тянем сеть, мёрджим флаги закладок, UPSERT в БД */
+    override suspend fun refresh() = withContext(Dispatchers.IO) {
         val body = api.getCoursesRaw(url).string()
-        val head = body.take(300)
-        Log.d("CoursesRepo", "HTTP head:\n$head")
+        Log.d("CoursesRepo", "HTTP head: ${body.take(200)}")
 
-        val trimmed = body.trimStart()
-        if (trimmed.startsWith("<!DOCTYPE", true) || trimmed.startsWith("<html", true)) {
-            throw IllegalStateException("HTML вместо JSON: проверьте публичность/квоту по ссылке Google Drive.")
-        }
-
-        val root: JsonElement = try {
-            json.parseToJsonElement(body)
-        } catch (e: SerializationException) {
-            throw IllegalStateException("Невалидный JSON. Начало ответа: $head", e)
-        }
+        val root: JsonElement = try { json.parseToJsonElement(body) }
+        catch (e: SerializationException) { throw IllegalStateException("Bad JSON: ${body.take(200)}", e) }
 
         val dtos: List<CourseDto> = when {
-            // кейс 1: { "courses": [ ... ] }
-            root is JsonObject && "courses" in root -> {
-                try {
-                    json.decodeFromJsonElement(CoursesResponseDto.serializer(), root).courses
-                } catch (e: SerializationException) {
-                    throw IllegalStateException("Не удалось декодировать поле 'courses'. Начало: $head", e)
-                }
-            }
-            // кейс 2: чистый массив [ ... ]
-            root is JsonArray -> {
-                try {
-                    json.decodeFromJsonElement(ListSerializer(CourseDto.serializer()), root)
-                } catch (e: SerializationException) {
-                    throw IllegalStateException("Не удалось декодировать массив. Начало: $head", e)
-                }
-            }
-            // кейс 3: объект с другим ключом (например, { "data": [ ... ] })
+            root is JsonObject && "courses" in root ->
+                json.decodeFromJsonElement(CoursesResponseDto.serializer(), root).courses
+            root is JsonArray ->
+                json.decodeFromJsonElement(ListSerializer(CourseDto.serializer()), root)
             root is JsonObject -> {
-                val firstArrayEntry = root.entries.firstOrNull { it.value is JsonArray }
-                if (firstArrayEntry != null) {
-                    Log.w("CoursesRepo", "Используем массив из ключа '${firstArrayEntry.key}'")
-                    json.decodeFromJsonElement(ListSerializer(CourseDto.serializer()), firstArrayEntry.value)
-                } else {
-                    throw IllegalStateException("JSON без массива курсов. Начало: $head")
-                }
+                val arr = root.entries.firstOrNull { it.value is JsonArray }?.value
+                    ?: throw IllegalStateException("No array in JSON")
+                json.decodeFromJsonElement(ListSerializer(CourseDto.serializer()), arr)
             }
-            else -> throw IllegalStateException("Неизвестная структура JSON. Начало: $head")
+            else -> emptyList()
         }
 
-        dtos.map { it.toDomain() }
+        // Сохраняем текущее состояние лайков, чтобы не потерять при апдейте
+        val likes = dao.snapshotLikes().associate { it.id to it.hasLike }
+
+        val entities: List<CourseEntity> = dtos.map { dto ->
+            val preserved = likes[dto.id] ?: false
+            dto.toEntity(preservedLike = preserved)
+        }
+
+        dao.upsertAll(entities)
+    }
+
+    override suspend fun updateBookmark(id: Long, hasLike: Boolean) {
+        withContext(Dispatchers.IO) { dao.updateBookmark(id, hasLike) }
     }
 }

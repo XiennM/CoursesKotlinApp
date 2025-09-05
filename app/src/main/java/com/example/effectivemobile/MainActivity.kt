@@ -47,8 +47,8 @@ class MainActivity : AppCompatActivity() {
         supportFragmentManager.setFragmentResultListener("bottom_nav", this) { _, bundle ->
             when (bundle.getString("dest")) {
                 "home"    -> switchTo(CourseListFragment())
-                "favourites"  -> switchTo(FavouriteCoursesListFragment())
-                "profile" -> switchTo(CourseListFragment())
+                "favourites"  -> switchTo(FavouritesFragment())
+                "profile" -> switchTo(ProfileFragment())
             }
         }
     }

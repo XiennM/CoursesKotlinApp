@@ -1,50 +1,45 @@
 package com.example.effectivemobile
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import com.example.effectivemobile.databinding.FragmentCourseListBinding
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.effectivemobile.databinding.FragmentFavouritesBinding
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class CourseListFragment : Fragment(R.layout.fragment_course_list) {
+class FavouritesFragment : Fragment(R.layout.fragment_favourites) {
 
-    private var _binding: FragmentCourseListBinding? = null
+    private var _binding: FragmentFavouritesBinding? = null
     private val binding get() = _binding!!
 
-    private val vm: CoursesViewModel by viewModel()
+    private val vm: FavouritesViewModel by viewModel()
+
     private val adapter by lazy {
-        CourseListAdapter(
-            onBookmarkClick = { course -> vm.onBookmarkClick(course) }
-        )
+        CourseListAdapter(onBookmarkClick = { vm.onBookmarkClick(it) })
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        _binding = FragmentCourseListBinding.inflate(inflater, container, false)
+        _binding = FragmentFavouritesBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        binding.recyclerCourses.layoutManager =
-            androidx.recyclerview.widget.LinearLayoutManager(requireContext())
+        binding.recyclerCourses.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerCourses.adapter = adapter
-
-
-        binding.tvSort.setOnClickListener {
-
-            vm.toggleSort()
-        }
+        binding.recyclerCourses.setHasFixedSize(true)
+        binding.recyclerCourses.itemAnimator = null
+        binding.recyclerCourses.setItemViewCacheSize(12)
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 vm.state.collect { st ->
-                    Log.d("CoursesUI", "items=${st.data.size}")
                     adapter.submit(st.data)
                 }
             }
@@ -55,5 +50,4 @@ class CourseListFragment : Fragment(R.layout.fragment_course_list) {
         super.onDestroyView()
         _binding = null
     }
-
 }

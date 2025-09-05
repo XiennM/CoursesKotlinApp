@@ -3,6 +3,7 @@ package com.example.effectivemobile
 import android.app.Application
 import com.example.data.dataNetworkModule
 import com.example.data.di.dataRepositoryModule
+import com.example.data.di.dataRoomModule
 import com.example.effectivemobile.di.appModule
 import com.example.effectivemobile.domain.di.domainModule
 import org.koin.android.ext.koin.androidContext
@@ -16,6 +17,7 @@ class App : Application() {
             modules(
                 dataNetworkModule,
                 dataRepositoryModule,
+                dataRoomModule,
                 domainModule,
                 appModule
             )

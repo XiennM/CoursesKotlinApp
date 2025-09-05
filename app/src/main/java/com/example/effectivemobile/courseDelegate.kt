@@ -3,14 +3,13 @@ package com.example.effectivemobile
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import coil.load
 import com.example.effectivemobile.databinding.ItemCourseBinding
 import com.example.effectivemobile.domain.models.Course
 import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegateViewBinding
 import eightbitlab.com.blurview.RenderEffectBlur
 
 @SuppressLint("NewApi")
-fun courseDelegate(onClick: (Course) -> Unit) =
+fun courseDelegate(onBookmarkClick: (Course) -> Unit) =
     adapterDelegateViewBinding<Course, Course, ItemCourseBinding>(
         viewBinding = { inflater: LayoutInflater, parent: ViewGroup ->
             ItemCourseBinding.inflate(inflater, parent, false)
@@ -25,11 +24,7 @@ fun courseDelegate(onClick: (Course) -> Unit) =
             binding.txtDateChip.text = item.publishDate
             binding.iconBookmark.isSelected = item.hasLike
 
-            binding.badgeBookmark.setOnClickListener {
-                val sel = !binding.iconBookmark.isSelected
-                binding.iconBookmark.isSelected = sel
-                // TODO: уведомить VM, чтобы сохранить флаг
-            }
+            binding.iconBookmark.setOnClickListener { onBookmarkClick(item) }
 
             if (binding.badgeRate.tag != true) {
                 val blurRoot = binding.root

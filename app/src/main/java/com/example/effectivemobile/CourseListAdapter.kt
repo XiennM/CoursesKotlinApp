@@ -4,7 +4,7 @@ import androidx.recyclerview.widget.DiffUtil
 import com.example.effectivemobile.domain.models.Course
 import com.hannesdorfmann.adapterdelegates4.AsyncListDifferDelegationAdapter
 
-class CourseListAdapter(onClick: (Course) -> Unit) :
+class CourseListAdapter(onBookmarkClick: (Course) -> Unit) :
     AsyncListDifferDelegationAdapter<Course>(DIFF) {
 
     companion object {
@@ -14,7 +14,11 @@ class CourseListAdapter(onClick: (Course) -> Unit) :
         }
     }
 
-    init { delegatesManager.addDelegate(courseDelegate(onClick)) }
+
+    init {
+        delegatesManager
+            .addDelegate(courseDelegate(onBookmarkClick))
+    }
 
     fun submit(items: List<Course>) = differ.submitList(items)
 }

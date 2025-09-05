@@ -49,6 +49,7 @@
                 android:paddingLeft="16dp"
                 android:textColor="@color/white"
                 android:textColorHint="@color/extralightgray"
+                android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@._-"
                 />
 
         </LinearLayout>
