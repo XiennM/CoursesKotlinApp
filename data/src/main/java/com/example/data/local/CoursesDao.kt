@@ -16,6 +16,9 @@ interface CoursesDao {
     @Query("UPDATE courses SET hasLike = :enabled WHERE id = :id")
     suspend fun updateBookmark(id: Long, enabled: Boolean)
 
+    @Query("SELECT COUNT(*) FROM courses")
+    suspend fun count(): Int
+
     @Query("SELECT id, hasLike FROM courses")
     suspend fun snapshotLikes(): List<IdLike>
 }

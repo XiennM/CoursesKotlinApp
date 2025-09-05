@@ -41,6 +41,13 @@ class CoursesViewModel(
             }
             .catch { e -> _state.value = CoursesUiState(loading = false) }
             .launchIn(viewModelScope)
+
+        viewModelScope.launch {
+            try {
+                refreshCourses()
+            } catch (t: Throwable) {
+            }
+        }
     }
 
     fun toggleSort() {
