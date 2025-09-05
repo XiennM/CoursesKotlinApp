@@ -7,42 +7,132 @@
     android:layout_height="226dp"
     android:layout_marginHorizontal="16dp"
     android:layout_marginBottom="16dp"
-    app:cardCornerRadius="16dp">
+    app:cardCornerRadius="16dp"
+    app:cardBackgroundColor="@color/bg_elements"
+    app:strokeWidth="0dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:backgroundTint="#151515">
+        android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/imageView"
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/img_course"
             android:layout_width="match_parent"
             android:layout_height="105dp"
             android:scaleType="centerCrop"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:srcCompat="@tools:sample/backgrounds/scenic" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.BottomRounded"
+            tools:srcCompat="@tools:sample/backgrounds/scenic"/>
 
-        <TextView
+        <eightbitlab.com.blurview.BlurView
+            android:id="@+id/badge_rate"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:paddingTop="6dp"
+            android:paddingBottom="6dp"
+            android:background="@drawable/bg_blur_chip"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/img_course"
+            android:layout_marginStart="8dp"
+            android:layout_marginBottom="8dp"
+            android:clipToOutline="true">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="14dp"
+                android:layout_height="14dp"
+                android:src="@drawable/ic_star"
+                app:tint="@color/green_text" />
+
+            <TextView
+                android:id="@+id/txt_rate_chip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:text="4.9"
+                android:textColor="@android:color/white"
+                android:textSize="12sp"/>
+        </LinearLayout>
+    </eightbitlab.com.blurview.BlurView>
+
+        <eightbitlab.com.blurview.BlurView
+            android:id="@+id/badge_date"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:paddingTop="6dp"
+            android:paddingBottom="6dp"
+            android:background="@drawable/bg_blur_chip"
+            app:layout_constraintStart_toEndOf="@id/badge_rate"
+            app:layout_constraintBottom_toBottomOf="@id/img_course"
+            android:layout_marginStart="8dp"
+            android:layout_marginBottom="8dp"
+            android:clipToOutline="true">
+
+            <TextView
+                android:id="@+id/txt_date_chip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="22 мая 2024"
+                android:textColor="@android:color/white"
+                android:textSize="12sp"/>
+        </eightbitlab.com.blurview.BlurView>
+
+        <eightbitlab.com.blurview.BlurView
+            android:id="@+id/badge_bookmark"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/bg_blur_chip"
+            android:clipToOutline="true"
+            android:padding="6dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/img_course">
+
+        <ImageView
+            android:id="@+id/iconBookmark"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="center"
+            android:src="@drawable/selector_bookmark"
+            app:tint="@color/bookmark_tint"
+            />
+    </eightbitlab.com.blurview.BlurView>
+
+
+    <TextView
             android:id="@+id/txt_course_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
+            android:textColor="@color/white"
             android:text="Name"
             android:textAppearance="?attr/textAppearanceTitleMedium"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView" />
+            app:layout_constraintTop_toBottomOf="@+id/img_course"/>
 
         <TextView
             android:id="@+id/txt_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="12dp"
             android:layout_marginEnd="16dp"
+            android:textColor="@color/white"
             android:text="TextView"
+            android:maxLines="2"
             style="@style/TextAppearance.Material3.BodySmall"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -53,21 +143,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
             android:text="TextView"
+            android:textColor="@color/white"
             style="@style/TextAppearance.Material3.TitleMedium"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txt_description"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintBaseline_toBaselineOf="@id/btn_more_description"/>
 
         <Button
             android:id="@+id/btn_more_description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             style="@style/TextAppearance.Material3.BodySmall"
             android:clickable="true"
             android:focusable="true"
@@ -76,5 +164,6 @@
             android:text="@string/show_more"
             android:textColor="@color/green_text"
             android:drawableEnd="@drawable/ic_arrow_right"/>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

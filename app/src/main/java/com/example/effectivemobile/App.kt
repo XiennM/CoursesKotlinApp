@@ -1,6 +1,8 @@
 package com.example.effectivemobile
 
 import android.app.Application
+import com.example.data.dataNetworkModule
+import com.example.data.di.dataRepositoryModule
 import com.example.effectivemobile.di.appModule
 import com.example.effectivemobile.domain.di.domainModule
 import org.koin.android.ext.koin.androidContext
@@ -12,8 +14,10 @@ class App : Application() {
         startKoin {
             androidContext(this@App)
             modules(
-                domainModule, // из модуля domain
-                appModule     // из модуля app
+                dataNetworkModule,
+                dataRepositoryModule,
+                domainModule,
+                appModule
             )
         }
     }

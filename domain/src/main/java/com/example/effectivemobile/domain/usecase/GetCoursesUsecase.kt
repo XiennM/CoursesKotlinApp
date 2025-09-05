@@ -1,9 +1,8 @@
 package com.example.effectivemobile.domain.usecase
 
-class GetCoursesUsecase {
+import com.example.effectivemobile.domain.models.Course
+import com.example.effectivemobile.domain.repository.CoursesRepository
 
-    fun execute() : List<String> {
-
-        return emptyList()
-    }
+class GetCoursesUseCase(private val repo: CoursesRepository) {
+    suspend operator fun invoke(): List<Course> = repo.getCourses()
 }
